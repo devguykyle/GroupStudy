@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div id="home-copy">
+            <h1 id="title">Group Study</h1>
+            <p id="subtitle">Welcome to Group Study! <br>A place to learn.</p>
+            
+            <h4>Login</h4>
+            <form action="/login" method="post">
+                <label for="username">Username:</label>
+                <input name="username" id="username" type="text">
+                <br>
+                <label for="password">Password:</label>
+                <input name="password" id="password" type="password">
+
+                <button type="submit" value="login">Login</button>
+            </form>
+        </div>
+    </body>
+</html>
+<style>
+    html {
+        margin: 0;
+        background-color: rgb(118, 224, 154);
+    }
+
+    #home-copy {
+        width: 100%;
+        text-align: center;
+        padding-top: 70px;
+    }
+
+    #title {
+        color: white;
+        font-family: Arial;
+        font-weight: bolder;
+        font-size: 9em;
+    }
+
+    #subtitle {
+        color: rgb(8, 92, 5);
+        font-size: 3em;
+        font-family: Arial;
+        font-weight: bold;
+    }
+
+</style>

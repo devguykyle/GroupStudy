@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h3><%= user.name %>, <%= user.id %></h3>
+        <form action="/createCourse" method="post">
+            <label for="title">Course Title</label>
+            <input type="text" name="title" id="title">
+            <label for="description">Course Description</label>
+            <input type="text" name="description" id="description">
+
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
