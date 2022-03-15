@@ -11,10 +11,13 @@ module.exports  = (app) => {
             if (err) throw err;
 
             if (result == true) {
+                console.log(user._id)
                 req.session.username = user.username;
-                req.session.id = user._id;
+                req.session.user_id = user._id;
                 req.session.loggedIn = true;
             }
+
+            console.log()
 
             res.redirect('/courses');
         });

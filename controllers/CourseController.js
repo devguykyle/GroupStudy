@@ -64,7 +64,7 @@ module.exports = (app) => {
 
         let user = {
             name: req.session.username,
-            id: req.session.id,
+            id: req.session.user_id,
         };
 
         res.render('pages/course/create', { user: user });
@@ -75,12 +75,12 @@ module.exports = (app) => {
         const course = new Course({
             title: req.body.title,
             description: req.body.description,
-            creatorId: req.session.id,
+            creatorId: req.session.user_id,
         });
 
         course.save((err, course) => {
             if (err) throw err;
-            res.redirect('/course', 302, {course: course})
+            res.redirect('/courses', 302, {course: course})
         })
     });
 

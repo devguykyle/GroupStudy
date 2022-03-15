@@ -20,7 +20,7 @@ module.exports = (app) => {
                 if (err) throw err;
                 
                 req.session.username = user.username;
-                req.session.id = user.id;
+                req.session.user_id = user._id;
                 req.session.loggedIn = true;
 
                 res.redirect('/courses');
