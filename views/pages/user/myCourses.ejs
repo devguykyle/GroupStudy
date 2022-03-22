@@ -1,0 +1,20 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <%- include ("../../partials/header.ejs") %>
+
+        <h1><%= user.username %> 's Courses</h1>
+        <ul>
+            <% for(var i = 0; i < courses.length; i++) {  %>
+                <li>
+                    <a href="/course/details/<%= courses[i].id %>">
+                        <h3> <%= courses[i].title %> </h3>
+                        <p> <%= courses[i].description %> </p>
+                    </a>
+                </li>
+              <% } %>
+        </ul>
+    </body>
+</html>

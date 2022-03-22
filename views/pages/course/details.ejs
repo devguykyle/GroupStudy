@@ -1,0 +1,35 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <%- include ("../../partials/header.ejs") %>
+
+        <h1><%= course.title %></h1>
+        <ul>
+            <% for(var i = 0; i < units.length; i++) {  %>
+                <li>
+                    <h3> <a href="<%= units[i].link %>">Content Link</a> </h3>
+                    <p> <%= units[i].description %> </p>
+                    <a href="/course/resource/delete/<%= units[i].id %>/<%= course.id %>">delete</a>
+                </li>
+              <% } %>
+        </ul>
+    </body>
+    <form action="/course/resource/add/<%= course.id %>" method="POST">
+        <label for="">Link:</label>
+        <input type="text" name="link">
+
+        <label for="">Description:</label>
+        <input type="text" name="description">
+
+        <label for="">Unit:</label>
+        <input type="text" name="unit">
+
+        <button type="submit">update course</button>
+    </form>
+
+    <section>
+        <h3>Comments</h3>
+    </section>
+</html>

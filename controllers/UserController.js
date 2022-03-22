@@ -24,7 +24,7 @@ module.exports = (app) => {
                 req.session.loggedIn = true;
 
                 res.redirect('/courses');
-              });
+            });
         });
     });
 }

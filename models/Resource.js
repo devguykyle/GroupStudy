@@ -19,11 +19,18 @@ const resource = new Schema({
     type: String,
     required: true,
   },
+  unit: {
+    type: Number,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  courseId: {
+    type: ObjectId,
+  },
   resourceType: {
     type: String,
-  },
-  addedBy: { //userID
-    type: ObjectId,
   },
 }, { timestamps: true });
 

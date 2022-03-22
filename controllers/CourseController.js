@@ -1,5 +1,6 @@
 const Course = require('../models/Course');
 const User = require('../models/User');
+const Resource = require('../models/Resource');
 const { ObjectId } = require('bson');
 
 module.exports = (app) => {
@@ -14,49 +15,72 @@ module.exports = (app) => {
     });
 
     app.get('/course/details/:id', (req, res) => {
-        Course.find({ id: req.params.id }, (err, course) => {
+        Course.findOne({_id: req.params.id }, (err, course) => {
             if (err) throw err;
-            res.render('pages/course/detail', { course });
+
+            Resource.find({ courseId: req.params.id }, (err, resources) => {
+                if (err) throw err
+
+                res.render('pages/course/details', { course, units: resources });
+            });
         });
     });
 
-    app.get('/course/edit/:id', (req, res) => {
+    app.post('/course/resource/add/:id', (req, res) => {
         isLoggedIn(req, res);
 
-        Course.updateOne({ id: req.courseId }, {resourceId: {
-            link: req.link,
-            resourceType: req.type,
-            description: req.description,
-        }}, (err, course) => {
+        resource = new Resource({
+            link: req.body.link,
+            description: req.body.description,
+            courseId: req.params.id,
+        });
+
+        resource.save((err) => {
             if (err) throw err;
-            res.render('pages/course/edit', { course });
+
+            res.redirect(`http://localhost:8000/course/details/${req.params.id}`);
         });
     });
 
-    app.get('/course/resource/delete/:id', (req, res) => {
+
+    app.get('/course/resource/delete/:id/:courseId', (req, res) => {
         isLoggedIn(req, res);
 
-        const resourceId = ObjectId();
-
-        Course.updateOne({ id: req.courseId }, { $set: { resourceId: {
-            link: req.link,
-            resourceType: req.type,
-            description: req.description,
-        }}}, (err, course) => {
+        Resource.deleteOne({ _id: req.params.id }, (err) => {
             if (err) throw err;
-            res.render('pages/course/edit', { course });
+            res.redirect(`http://localhost:8000/course/details/${req.params.courseId}`);
         });
     });
 
     // add an existing course
-    app.post('/addCourse', (req, res) => {
+    app.post('/addCourse/:id', (req, res) => {
         isLoggedIn(req, res);
 
-        User.updateOne({ id: req.session.id }, { $push: { enrollments: req.courseId }}, (err, user) => {
+        User.updateOne({ _id: req.session.user_id }, { $push: { enrollments: req.params.id }}, (err, user) => {
             if (err) throw err;
-            res.redirect('/myCourses', { user: user.username, courses: user.enrollments });
+            res.redirect(301, '/myCourses');
         });
     });
+
+    app.get('/myCourses', (req, res) => {
+        isLoggedIn(req, res);
+
+        let username;
+        let myCourses;
+
+        User.findOne({_id: req.session.user_id}, async (err, user) => {
+            if (err) throw err
+           await Course.find({
+                '_id': { $in: user.enrollments }}, (err, courses) => {
+                    if (err) throw err
+                    myCourses = courses;
+                });
+            
+            username = user;
+
+            res.render('pages/user/myCourses', { user: username, courses: myCourses });
+        })
+    })
 
     // create a new course
     app.get('/createCourse', async (req, res) => {
@@ -71,7 +95,6 @@ module.exports = (app) => {
     });
 
     app.post('/createCourse', (req, res) => {
-        console.log(req.body)
         const course = new Course({
             title: req.body.title,
             description: req.body.description,

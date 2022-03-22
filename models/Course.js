@@ -26,7 +26,7 @@ const course = new Schema({
   description: {
     type: String,
     required: true,
-  },
+  }, 
 }, { timestamps: true });
 
 const Course = conn.model('Course', course);
